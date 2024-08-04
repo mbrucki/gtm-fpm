@@ -48,4 +48,4 @@ If you have any suggestions, feel free to open an issue or submit a pull request
 
 ## License
 
-This plugin is licensed under the GPLv2 or later. See the [LICENSE](license.txt) file for more details.
+This plugin is licensed under the GPLv3.
