@@ -23,6 +23,16 @@ First-party mode lets you deploy GTM using your own first-party infrastructure, 
 * REST API endpoint for handling GTM data
 * Automatic insertion of GTM script in the <head> section of your site
 
+= External Service Usage =
+This plugin communicates with an external service provided by Google Tag Manager in first-party mode. The requests are routed through your WordPress backend to the following domain:
+- **fps.goog**
+
+For more information, you can review the service's Terms of Service and Privacy Policies:
+- [Google Tag Manager Terms of Service](https://www.google.com/analytics/terms/tag-manager/)
+- [Google Privacy Policy](https://policies.google.com/privacy)
+
+Please ensure that your usage of this plugin complies with any legal obligations regarding data transmission and privacy.
+
 == Installation ==
 
 1. Upload the `gtm-first-party-mode` folder to the `/wp-content/plugins/` directory, or install the plugin directly through the WordPress plugins screen.
