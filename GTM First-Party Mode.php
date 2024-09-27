@@ -42,6 +42,7 @@ function gtmfpm_gtm_fpm_settings_init() {
 
 function gtmfpm_gtm_fpm_settings_section_cb() {
     echo '<p>Enter your GTM ID and Tag Serving Path below. First-party mode lets you deploy GTM using your own first-party infrastructure, hosted on your website\'s domain. This infrastructure sits between your website and Google\'s services, making your first-party infrastructure the only technology to interact directly with your website users.</p>';
+    echo '<p>Note that the use of this plugin does not exempt you from the responsibility of safeguarding user privacy. Collecting or processing user data without explicit consent is subject to legal penalties.</p>';
 }
 
 function gtmfpm_gtm_id_render() {
