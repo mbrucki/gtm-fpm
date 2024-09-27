@@ -1,6 +1,6 @@
 === GTM First-Party Mode ===
-Contributors: mariuszbrucki
-Donate link: https://mariuszbrucki.pl/
+Contributors: MeasureLake - analytics tech hub & agency
+Donate link: https://measurelake.com/
 Tags: google tag manager, first-party mode, analytics, data tracking, gtm
 Requires at least: 5.0
 Tested up to: 6.6
