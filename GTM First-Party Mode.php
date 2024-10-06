@@ -3,59 +3,61 @@
 Plugin Name: GTM First-Party Mode
 Description: Routes requests through WordPress backend to fps.goog and inserts GTM script in <head>.
 Version: 1.20
-Author: Mariusz Brucki
-Author URI: https://mariuszbrucki.pl
+Author: MeasureLake
+Author URI: https://measurelake.com
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 */
 
 // Add settings menu
-add_action('admin_menu', 'gtm_fpm_menu');
+add_action('admin_menu', 'gtmfpm_gtm_fpm_menu');
 
-function gtm_fpm_menu() {
-    add_options_page('GTM First-Party Mode Settings', 'GTM First-Party Mode', 'manage_options', 'gtm-fpm-settings', 'gtm_fpm_settings_page');
+function gtmfpm_gtm_fpm_menu() {
+    add_options_page('GTM First-Party Mode Settings', 'GTM First-Party Mode', 'manage_options', 'gtm-fpm-settings', 'gtmfpm_gtm_fpm_settings_page');
 }
 
 // Enqueue styles
-add_action('admin_enqueue_scripts', 'gtm_fpm_enqueue_styles');
+add_action('admin_enqueue_scripts', 'gtmfpm_gtm_fpm_enqueue_styles');
 
-function gtm_fpm_enqueue_styles($hook) {
+function gtmfpm_gtm_fpm_enqueue_styles($hook) {
     if ($hook != 'settings_page_gtm-fpm-settings') {
         return;
     }
-    wp_enqueue_style('gtm_fpm_admin_css', plugin_dir_url(__FILE__) . 'css/admin-style.css', array(), '1.20');
+    wp_register_style('gtm_fpm_admin_css', plugin_dir_url(__FILE__) . 'css/admin-style.css', array(), '1.20');
+    wp_enqueue_style('gtm_fpm_admin_css');
 }
 
 // Register settings
-add_action('admin_init', 'gtm_fpm_settings_init');
+add_action('admin_init', 'gtmfpm_gtm_fpm_settings_init');
 
-function gtm_fpm_settings_init() {
-    register_setting('gtm_fpm_settings_group', 'gtm_id', 'gtm_fpm_validate_settings');
-    register_setting('gtm_fpm_settings_group', 'gtm_path', 'gtm_fpm_validate_settings');
-    
-    add_settings_section('gtm_fpm_settings_section', 'Settings', 'gtm_fpm_settings_section_cb', 'gtm-fpm-settings');
+function gtmfpm_gtm_fpm_settings_init() {
+    register_setting('gtm_fpm_settings_group', 'gtm_id', 'gtmfpm_gtm_fpm_validate_settings');
+    register_setting('gtm_fpm_settings_group', 'gtm_path', 'gtmfpm_gtm_fpm_validate_settings');
 
-    add_settings_field('gtm_id', 'GTM ID', 'gtm_id_render', 'gtm-fpm-settings', 'gtm_fpm_settings_section');
-    add_settings_field('gtm_path', 'Tag Serving Path', 'gtm_path_render', 'gtm-fpm-settings', 'gtm_fpm_settings_section');
+    add_settings_section('gtm_fpm_settings_section', 'Settings', 'gtmfpm_gtm_fpm_settings_section_cb', 'gtm-fpm-settings');
+
+    add_settings_field('gtm_id', 'GTM ID', 'gtmfpm_gtm_id_render', 'gtm-fpm-settings', 'gtm_fpm_settings_section');
+    add_settings_field('gtm_path', 'Tag Serving Path', 'gtmfpm_gtm_path_render', 'gtm-fpm-settings', 'gtm_fpm_settings_section');
 }
 
-function gtm_fpm_settings_section_cb() {
+function gtmfpm_gtm_fpm_settings_section_cb() {
     echo '<p>Enter your GTM ID and Tag Serving Path below. First-party mode lets you deploy GTM using your own first-party infrastructure, hosted on your website\'s domain. This infrastructure sits between your website and Google\'s services, making your first-party infrastructure the only technology to interact directly with your website users.</p>';
+    echo '<p>Note that the use of this plugin does not exempt you from the responsibility of safeguarding user privacy. Collecting or processing user data without explicit consent is subject to legal penalties.</p>';
 }
 
-function gtm_id_render() {
+function gtmfpm_gtm_id_render() {
     $gtm_id = get_option('gtm_id');
     echo '<input type="text" name="gtm_id" value="' . esc_attr($gtm_id) . '" required />';
     echo '<p class="description">Enter your GTM ID. This field is required.</p>';
 }
 
-function gtm_path_render() {
+function gtmfpm_gtm_path_render() {
     $gtm_path = get_option('gtm_path');
     echo '<input type="text" name="gtm_path" value="' . esc_attr($gtm_path) . '" required />';
     echo '<p class="description">Enter the path for serving tags. This field is required. Caution: This setup reroutes all traffic with the chosen path. To avoid affecting your website, choose a path that\'s not already in use.</p>';
 }
 
-function gtm_fpm_validate_settings($input) {
+function gtmfpm_gtm_fpm_validate_settings($input) {
     if (empty($input)) {
         add_settings_error(
             'gtm_fpm_settings_group',
@@ -67,7 +69,7 @@ function gtm_fpm_validate_settings($input) {
     return $input;
 }
 
-function gtm_fpm_settings_page() {
+function gtmfpm_gtm_fpm_settings_page() {
     ?>
     <div class="wrap">
         <h1>GTM First-Party Mode Settings</h1>
@@ -82,9 +84,9 @@ function gtm_fpm_settings_page() {
     <div class="credits-container">
         <div class="credits">
             <h2>Credits</h2>
-            <p>Plugin developed by <a href="https://mariuszbrucki.pl" target="_blank">Mariusz Brucki</a></p>
-            <p><a href="https://www.linkedin.com/in/mariusz-brucki/" target="_blank">Connect on LinkedIn</a></p>
-            <p>If you encounter any issues, feel free to <a href="mailto:analytics@mariuszbrucki.pl">contact me</a>.</p>
+            <p>Plugin developed by <a href="https://measurelake.com" target="_blank">MeasureLake - analytics tech hub</a></p>
+            <p><a href="https://www.linkedin.com/company/measurelake" target="_blank">Follow us on LinkedIn to stay up to date</a></p>
+            <p>If you encounter any issues, feel free to <a href="mailto:welcome@measurelake.com">email us</a>.</p>
         </div>
     </div>
     <?php
@@ -97,12 +99,12 @@ add_action('rest_api_init', function () {
     if ($gtm_id && $path) {
         register_rest_route('gtm/v1', '/' . $path . '(?:/(?P<rest>.*))?', array(
             'methods' => 'GET, POST, PUT, DELETE',
-            'callback' => 'gtm_metrics_callback',
+            'callback' => 'gtmfpm_gtm_metrics_callback',
         ));
     }
 });
 
-function gtm_metrics_callback(WP_REST_Request $request) {
+function gtmfpm_gtm_metrics_callback(WP_REST_Request $request) {
     try {
         $gtm_id = get_option('gtm_id');
         $path = trim(get_option('gtm_path'), '/');
@@ -159,8 +161,8 @@ add_action('init', function() {
 });
 
 // Flush rewrite rules on activation
-register_activation_hook(__FILE__, 'gtm_fpm_plugin_activation');
-function gtm_fpm_plugin_activation() {
+register_activation_hook(__FILE__, 'gtmfpm_gtm_fpm_plugin_activation');
+function gtmfpm_gtm_fpm_plugin_activation() {
     $path = trim(get_option('gtm_path'), '/');
     if ($path) {
         add_rewrite_rule('^' . $path . '(?:/(.*))?', 'index.php?rest_route=/gtm/v1/' . $path . '/$matches[1]', 'top');
@@ -169,8 +171,8 @@ function gtm_fpm_plugin_activation() {
 }
 
 // Flush rewrite rules on deactivation
-register_deactivation_hook(__FILE__, 'gtm_fpm_plugin_deactivation');
-function gtm_fpm_plugin_deactivation() {
+register_deactivation_hook(__FILE__, 'gtmfpm_gtm_fpm_plugin_deactivation');
+function gtmfpm_gtm_fpm_plugin_deactivation() {
     flush_rewrite_rules();
 }
 
@@ -181,9 +183,9 @@ add_action('update_option_gtm_path', function($old_value, $value) {
 }, 10, 2);
 
 // Add GTM script to head
-add_action('wp_head', 'insert_gtm_script');
+add_action('wp_head', 'gtmfpm_insert_gtm_script');
 
-function insert_gtm_script() {
+function gtmfpm_insert_gtm_script() {
     $gtm_id = get_option('gtm_id');
     $path = trim(get_option('gtm_path'), '/');
 
@@ -196,7 +198,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','');</script>
 <!-- End Google Tag Manager -->";
     } else {
-        echo "<script>console.log('GTM script not inserted. GTM ID or Path is missing.');</script>";
+        wp_register_script('gtm-inline-script', '');
+        wp_enqueue_script('gtm-inline-script');
+        wp_add_inline_script('gtm-inline-script', "console.log('GTM script not inserted. GTM ID or Path is missing.');");
     }
 }
 ?>
